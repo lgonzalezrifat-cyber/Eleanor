@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,7 +30,7 @@
             height: 100%;
             background: radial-gradient(circle, #1a1a1a 10%, transparent 10%);
             background-size: 30px 30px;
-            z-index: -1;
+            z-index: -2; /* Detrás de todo */
             animation: move 4s linear infinite;
         }
 
@@ -49,6 +48,8 @@
             border: 1px solid #333;
             max-width: 500px;
             width: 90%;
+            position: relative; /* Importante para el z-index */
+            z-index: 1; /* Encima del fondo y las estrellas */
         }
 
         h1 {
@@ -57,6 +58,11 @@
             letter-spacing: 3px;
             margin-bottom: 20px;
             font-size: 1.8rem;
+        }
+
+        /* Contenedor del reproductor para manejar los copos */
+        #reproductor {
+            position: relative;
         }
 
         /* El MARCO VERDE solicitado */
@@ -72,6 +78,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative; /* Necesario para contener los copos */
         }
 
         .marco-foto img {
@@ -104,9 +111,46 @@
             font-size: 1.2rem;
             color: #eee;
             min-height: 1.5em;
+            position: relative;
+            z-index: 2;
         }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
+
+        /* ESTILOS PARA LOS COPOS DE NIEVE / ESTRELLAS */
+        .copo {
+            position: absolute;
+            color: white;
+            font-size: 1.5rem;
+            top: -50px; /* Empieza arriba */
+            z-index: 10; /* Encima de la imagen pero dentro del contenedor */
+            pointer-events: none; /* No interfiere con clics */
+            animation: caida 4s linear infinite;
+        }
+
+        /* Animación de caída */
+        @keyframes caida {
+            0% {
+                top: -50px;
+                opacity: 1;
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                top: 100%; /* Cae hasta el fondo */
+                opacity: 0.2;
+                transform: translateX(20px) rotate(360deg); /* Lieve vaivén y rotación */
+            }
+        }
+
+        /* Posiciones específicas para que caigan a los lados */
+        /* Puedes agregar más elementos o ajustar los márgenes */
+        #reproductor .copo:nth-child(1) { left: 10px; animation-delay: 0s; }
+        #reproductor .copo:nth-child(2) { right: 10px; animation-delay: 1s; }
+        #reproductor .copo:nth-child(3) { left: 50px; animation-delay: 2s; font-size: 1rem;}
+        #reproductor .copo:nth-child(4) { right: 50px; animation-delay: 3s; }
+        #reproductor .copo:nth-child(5) { left: 30px; animation-delay: 1.5s; font-size: 1.2rem;}
+        #reproductor .copo:nth-child(6) { right: 30px; animation-delay: 2.5s; font-size: 0.8rem;}
+
     </style>
 </head>
 <body>
@@ -121,6 +165,14 @@
         </div>
 
         <div id="reproductor" class="hidden">
+            
+            <div class="copo">❄</div>
+            <div class="copo">❄</div>
+            <div class="copo">❄</div>
+            <div class="copo">❄</div>
+            <div class="copo">❄</div>
+            <div class="copo">❄</div>
+
             <h1>Collage de Eleanor</h1>
             <div class="marco-foto">
                 <img id="foto-actual" src="1.jpg" alt="Eleanor">
@@ -168,29 +220,38 @@
         });
 
         function iniciarCarrusel() {
+            // El primer cambio ocurre inmediatamente para que no espere 4 segundos en la primera foto
+            actualizarContenido(); 
+
             setInterval(() => {
                 // Efecto de desvanecimiento
                 imgElement.style.opacity = 0;
                 imgElement.style.transform = "scale(1.1)";
 
                 setTimeout(() => {
-                    // Cambia a 1.jpg, 2.jpg, 3.jpg...
-                    fotoNumero++;
-                    if (fotoNumero > totalFotos) {
-                        fotoNumero = 1;
-                    }
-
-                    imgElement.src = fotoNumero + ".jpg";
-                    txtElement.innerText = frases[fotoNumero - 1];
-
+                    actualizarContenido();
+                    
                     imgElement.style.opacity = 1;
                     imgElement.style.transform = "scale(1)";
                 }, 800);
 
             }, 4000); // Cambia cada 4 segundos
         }
+
+        function actualizarContenido() {
+            // Cambia a 1.jpg, 2.jpg, 3.jpg...
+            fotoNumero++;
+            if (fotoNumero > totalFotos) {
+                fotoNumero = 1;
+            }
+
+            imgElement.src = fotoNumero + ".jpg";
+            txtElement.innerText = frases[fotoNumero - 1];
+        }
     </script>
 </body>
 </html>
+
+
 
 
