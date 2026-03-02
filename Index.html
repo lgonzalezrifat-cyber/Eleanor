@@ -1,1 +1,196 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collage de Eleanor</title>
+    <style>
+        :root {
+            --verde-eleanor: #2ecc71; /* Un verde vibrante */
+            --verde-oscuro: #27ae60;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Fondo animado simple */
+        .background-dots {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #1a1a1a 10%, transparent 10%);
+            background-size: 30px 30px;
+            z-index: -1;
+            animation: move 4s linear infinite;
+        }
+
+        @keyframes move {
+            from { background-position: 0 0; }
+            to { background-position: 30px 30px; }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(20, 20, 20, 0.9);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 0 50px rgba(46, 204, 113, 0.2);
+            border: 1px solid #333;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            color: var(--verde-eleanor);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        /* El MARCO VERDE solicitado */
+        .marco-foto {
+            width: 350px;
+            height: 450px;
+            margin: 0 auto;
+            border: 10px solid var(--verde-eleanor); /* Marco Verde */
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(46, 204, 113, 0.5);
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .marco-foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.8s ease-in-out, transform 1s ease;
+        }
+
+        #btn-iniciar {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            background: var(--verde-eleanor);
+            color: black;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        #btn-iniciar:hover {
+            transform: scale(1.05);
+            background: white;
+        }
+
+        .mensaje {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #eee;
+            min-height: 1.5em;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="background-dots"></div>
+
+    <div class="container">
+        <div id="inicio">
+            <h1>Collage de Eleanor</h1>
+            <p>Haz clic para ver la sorpresa</p>
+            <button id="btn-iniciar">¡FELIZ CUMPLEAÑOS! 🎂</button>
+        </div>
+
+        <div id="reproductor" class="hidden">
+            <h1>Collage de Eleanor</h1>
+            <div class="marco-foto">
+                <img id="foto-actual" src="1.jpg" alt="Eleanor">
+            </div>
+            <div class="mensaje" id="texto-mensaje">¡Felicidades Eleanor!</div>
+        </div>
+    </div>
+
+    <audio id="musica" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const btn = document.getElementById('btn-iniciar');
+        const pantallaInicio = document.getElementById('inicio');
+        const pantallaReproductor = document.getElementById('reproductor');
+        const imgElement = document.getElementById('foto-actual');
+        const txtElement = document.getElementById('texto-mensaje');
+        const musica = document.getElementById('musica');
+
+        let fotoNumero = 1;
+        const totalFotos = 10; // Reconocerá hasta la 10.jpg
+
+        const frases = [
+            "¡Feliz Cumpleaños, Eleanor!",
+            "Hoy es un día muy especial 🌟",
+            "Que todos tus sueños se cumplan",
+            "¡Disfruta mucho tu día! 🎈",
+            "Eres una niña increíble ✨",
+            "Rodeada de mucho amor ❤️",
+            "¡A soplar las velitas! 🎂",
+            "Crea recuerdos inolvidables",
+            "¡Te queremos mucho!",
+            "¡Que viva la cumpleañera! 🥳"
+        ];
+
+        btn.addEventListener('click', () => {
+            pantallaInicio.classList.add('hidden');
+            pantallaReproductor.classList.remove('hidden');
+            
+            // Intentar reproducir música
+            musica.play().catch(e => console.log("La música requiere interacción del usuario primero"));
+            
+            iniciarCarrusel();
+        });
+
+        function iniciarCarrusel() {
+            setInterval(() => {
+                // Efecto de desvanecimiento
+                imgElement.style.opacity = 0;
+                imgElement.style.transform = "scale(1.1)";
+
+                setTimeout(() => {
+                    // Cambia a 1.jpg, 2.jpg, 3.jpg...
+                    fotoNumero++;
+                    if (fotoNumero > totalFotos) {
+                        fotoNumero = 1;
+                    }
+
+                    imgElement.src = fotoNumero + ".jpg";
+                    txtElement.innerText = frases[fotoNumero - 1];
+
+                    imgElement.style.opacity = 1;
+                    imgElement.style.transform = "scale(1)";
+                }, 800);
+
+            }, 4000); // Cambia cada 4 segundos
+        }
+    </script>
+</body>
+</html>
+
+
