@@ -130,6 +130,7 @@
         <div id="inicio">
             <h1>Collage de Eleanor</h1>
             <button id="btn-iniciar">¡FELIZ CUMPLEAÑOS! 🎂</button>
+            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">(Asegúrate de tener el volumen alto)</p>
         </div>
 
         <div id="reproductor" class="hidden">
@@ -141,8 +142,9 @@
         </div>
     </div>
 
-    <audio id="musica" loop>
+    <audio id="musica" loop preload="auto">
         <source src="cancion.mp3" type="audio/mpeg">
+        Tu navegador no soporta el audio.
     </audio>
 
     <script>
@@ -154,7 +156,6 @@
         const musica = document.getElementById('musica');
         const contenedorEstrellas = document.getElementById('contenedor-estrellas');
 
-        // FRASES ACTUALIZADAS
         const frases = [
             "¡Feliz Cumpleaños, Eleanor!",
             "Con mucho cariño de tu tío Kiki ❤️",
@@ -180,14 +181,29 @@
             setTimeout(() => { estrella.remove(); }, 4000);
         }
 
+        // FUNCIÓN CLAVE PARA LA MÚSICA
+        function reproducirMusica() {
+            musica.play().then(() => {
+                console.log("Música reproduciéndose correctamente");
+            }).catch(error => {
+                console.log("El navegador bloqueó el audio, intentando de nuevo...");
+            });
+        }
+
         btn.addEventListener('click', () => {
             pantallaInicio.classList.add('hidden');
             pantallaReproductor.classList.remove('hidden');
-            musica.play().catch(e => console.log("Audio interactivo"));
             
-            setInterval(crearEstrella, 250); // Genera estrellas constantemente
+            // Forzamos la reproducción al hacer click
+            reproducirMusica();
+            
+            setInterval(crearEstrella, 250);
             iniciarCarrusel();
         });
+
+        // Si falla, cualquier otro toque en la pantalla activará la música
+        document.body.addEventListener('touchstart', reproducirMusica, {once: true});
+        document.body.addEventListener('click', reproducirMusica, {once: true});
 
         let fotoNumero = 1;
         function iniciarCarrusel() {
