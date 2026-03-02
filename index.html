@@ -6,7 +6,7 @@
     <title>Collage de Eleanor</title>
     <style>
         :root {
-            --verde-eleanor: #2ecc71; /* Un verde vibrante */
+            --verde-eleanor: #2ecc71;
             --verde-oscuro: #27ae60;
         }
 
@@ -23,14 +23,13 @@
             overflow: hidden;
         }
 
-        /* Fondo animado simple */
         .background-dots {
             position: fixed;
             width: 100%;
             height: 100%;
             background: radial-gradient(circle, #1a1a1a 10%, transparent 10%);
             background-size: 30px 30px;
-            z-index: -2; /* Detrás de todo */
+            z-index: -2;
             animation: move 4s linear infinite;
         }
 
@@ -39,7 +38,27 @@
             to { background-position: 30px 30px; }
         }
 
+        /* --- ESTRELLAS CAYENDO --- */
+        .estrella {
+            position: fixed;
+            top: -50px;
+            color: var(--verde-eleanor);
+            font-size: 20px;
+            user-select: none;
+            z-index: 0; 
+            filter: drop-shadow(0 0 5px var(--verde-eleanor));
+            animation: caida linear infinite;
+        }
+
+        @keyframes caida {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
         .container {
+            position: relative;
             text-align: center;
             background: rgba(20, 20, 20, 0.9);
             padding: 30px;
@@ -48,8 +67,7 @@
             border: 1px solid #333;
             max-width: 500px;
             width: 90%;
-            position: relative; /* Importante para el z-index */
-            z-index: 1; /* Encima del fondo y las estrellas */
+            z-index: 10;
         }
 
         h1 {
@@ -57,20 +75,14 @@
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 20px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
         }
 
-        /* Contenedor del reproductor para manejar los copos */
-        #reproductor {
-            position: relative;
-        }
-
-        /* El MARCO VERDE solicitado */
         .marco-foto {
-            width: 350px;
-            height: 450px;
+            width: 280px; 
+            height: 380px;
             margin: 0 auto;
-            border: 10px solid var(--verde-eleanor); /* Marco Verde */
+            border: 8px solid var(--verde-eleanor);
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 0 30px rgba(46, 204, 113, 0.5);
@@ -78,14 +90,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative; /* Necesario para contener los copos */
         }
 
         .marco-foto img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity 0.8s ease-in-out, transform 1s ease;
+            transition: opacity 0.8s ease-in-out;
         }
 
         #btn-iniciar {
@@ -97,82 +108,31 @@
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             transition: 0.3s;
-        }
-
-        #btn-iniciar:hover {
-            transform: scale(1.05);
-            background: white;
         }
 
         .mensaje {
             margin-top: 20px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #eee;
-            min-height: 1.5em;
-            position: relative;
-            z-index: 2;
+            font-weight: 500;
         }
 
         .hidden { display: none !important; }
-
-        /* ESTILOS PARA LOS COPOS DE NIEVE / ESTRELLAS */
-        .copo {
-            position: absolute;
-            color: white;
-            font-size: 1.5rem;
-            top: -50px; /* Empieza arriba */
-            z-index: 10; /* Encima de la imagen pero dentro del contenedor */
-            pointer-events: none; /* No interfiere con clics */
-            animation: caida 4s linear infinite;
-        }
-
-        /* Animación de caída */
-        @keyframes caida {
-            0% {
-                top: -50px;
-                opacity: 1;
-                transform: translateX(0) rotate(0deg);
-            }
-            100% {
-                top: 100%; /* Cae hasta el fondo */
-                opacity: 0.2;
-                transform: translateX(20px) rotate(360deg); /* Lieve vaivén y rotación */
-            }
-        }
-
-        /* Posiciones específicas para que caigan a los lados */
-        /* Puedes agregar más elementos o ajustar los márgenes */
-        #reproductor .copo:nth-child(1) { left: 10px; animation-delay: 0s; }
-        #reproductor .copo:nth-child(2) { right: 10px; animation-delay: 1s; }
-        #reproductor .copo:nth-child(3) { left: 50px; animation-delay: 2s; font-size: 1rem;}
-        #reproductor .copo:nth-child(4) { right: 50px; animation-delay: 3s; }
-        #reproductor .copo:nth-child(5) { left: 30px; animation-delay: 1.5s; font-size: 1.2rem;}
-        #reproductor .copo:nth-child(6) { right: 30px; animation-delay: 2.5s; font-size: 0.8rem;}
-
     </style>
 </head>
 <body>
 
     <div class="background-dots"></div>
+    <div id="contenedor-estrellas"></div>
 
     <div class="container">
         <div id="inicio">
             <h1>Collage de Eleanor</h1>
-            <p>Haz clic para ver la sorpresa</p>
             <button id="btn-iniciar">¡FELIZ CUMPLEAÑOS! 🎂</button>
         </div>
 
         <div id="reproductor" class="hidden">
-            
-            <div class="copo">❄</div>
-            <div class="copo">❄</div>
-            <div class="copo">❄</div>
-            <div class="copo">❄</div>
-            <div class="copo">❄</div>
-            <div class="copo">❄</div>
-
             <h1>Collage de Eleanor</h1>
             <div class="marco-foto">
                 <img id="foto-actual" src="1.jpg" alt="Eleanor">
@@ -192,66 +152,56 @@
         const imgElement = document.getElementById('foto-actual');
         const txtElement = document.getElementById('texto-mensaje');
         const musica = document.getElementById('musica');
+        const contenedorEstrellas = document.getElementById('contenedor-estrellas');
 
-        let fotoNumero = 1;
-        const totalFotos = 10; // Reconocerá hasta la 10.jpg
-
+        // FRASES ACTUALIZADAS
         const frases = [
             "¡Feliz Cumpleaños, Eleanor!",
+            "Con mucho cariño de tu tío Kiki ❤️",
             "Hoy es un día muy especial 🌟",
-            "Que todos tus sueños se cumplan",
-            "¡Disfruta mucho tu día! 🎈",
             "Eres una niña increíble ✨",
-            "Rodeada de mucho amor ❤️",
+            "¡Que todos tus sueños se cumplan!",
+            "¡Disfruta mucho tu día! 🎈",
             "¡A soplar las velitas! 🎂",
             "Crea recuerdos inolvidables",
-            "¡Te queremos mucho!",
+            "Te queremos muchísimo",
             "¡Que viva la cumpleañera! 🥳"
         ];
+
+        function crearEstrella() {
+            const estrella = document.createElement('div');
+            estrella.className = 'estrella';
+            estrella.innerHTML = '★';
+            estrella.style.left = Math.random() * 100 + 'vw';
+            estrella.style.animationDuration = (Math.random() * 2 + 2) + 's'; 
+            estrella.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            
+            contenedorEstrellas.appendChild(estrella);
+            setTimeout(() => { estrella.remove(); }, 4000);
+        }
 
         btn.addEventListener('click', () => {
             pantallaInicio.classList.add('hidden');
             pantallaReproductor.classList.remove('hidden');
+            musica.play().catch(e => console.log("Audio interactivo"));
             
-            // Intentar reproducir música
-            musica.play().catch(e => console.log("La música requiere interacción del usuario primero"));
-            
+            setInterval(crearEstrella, 250); // Genera estrellas constantemente
             iniciarCarrusel();
         });
 
+        let fotoNumero = 1;
         function iniciarCarrusel() {
-            // El primer cambio ocurre inmediatamente para que no espere 4 segundos en la primera foto
-            actualizarContenido(); 
-
             setInterval(() => {
-                // Efecto de desvanecimiento
                 imgElement.style.opacity = 0;
-                imgElement.style.transform = "scale(1.1)";
-
                 setTimeout(() => {
-                    actualizarContenido();
-                    
+                    fotoNumero = (fotoNumero % 10) + 1;
+                    imgElement.src = fotoNumero + ".jpg";
+                    txtElement.innerText = frases[fotoNumero - 1];
                     imgElement.style.opacity = 1;
-                    imgElement.style.transform = "scale(1)";
                 }, 800);
-
-            }, 4000); // Cambia cada 4 segundos
-        }
-
-        function actualizarContenido() {
-            // Cambia a 1.jpg, 2.jpg, 3.jpg...
-            fotoNumero++;
-            if (fotoNumero > totalFotos) {
-                fotoNumero = 1;
-            }
-
-            imgElement.src = fotoNumero + ".jpg";
-            txtElement.innerText = frases[fotoNumero - 1];
+            }, 4000);
         }
     </script>
 </body>
 </html>
-
-
-
 
